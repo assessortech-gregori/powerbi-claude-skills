@@ -127,11 +127,11 @@ Every `visual.json` has this outer structure:
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
   "name": "v01KpiTotalSales",
   "position": {
-    "x": 30,
+    "x": 16,
     "y": 80,
     "z": 1000,
-    "width": 280,
-    "height": 150,
+    "width": 320,
+    "height": 160,
     "tabOrder": 0
   },
   "visual": {

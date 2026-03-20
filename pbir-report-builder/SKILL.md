@@ -1,6 +1,6 @@
 ---
 name: pbir-report-builder
-description: "Power BI PBIR Report Builder with IBCS Visuals. Generates Power BI report pages, visuals, and IBCS-compliant variance charts by writing PBIR JSON files directly into PBIP project folders. Use this skill EVERY TIME the user asks to: create a Power BI report page, add visuals to a report, generate KPI cards, create charts or tables in Power BI, build a dashboard layout with visuals, create IBCS variance charts, create actual vs plan visuals, or programmatically create Power BI visuals. Also trigger when the user mentions 'PBIR', 'IBCS', 'variance chart', 'variance table', 'actual vs plan', 'actual vs comparison', 'create visuals', 'add a page', 'build a report', 'KPI cards', 'place visuals', or wants to generate Power BI report content through code. If the user mentions any combination of Power BI + visuals/page/report/KPI/chart/table/IBCS/variance + create/build/generate/add, use this skill."
+description: "Power BI PBIR Report Builder. Generates Power BI report pages and visuals by writing PBIR JSON files directly into PBIP project folders. Use this skill EVERY TIME the user asks to: create a Power BI report page, add visuals to a report, generate KPI cards, create charts or tables in Power BI, build a dashboard layout with visuals, create actual vs plan visuals, or programmatically create Power BI visuals. Also trigger when the user mentions 'PBIR', 'variance chart', 'variance table', 'actual vs plan', 'actual vs comparison', 'create visuals', 'add a page', 'build a report', 'KPI cards', 'place visuals', or wants to generate Power BI report content through code. If the user mentions any combination of Power BI + visuals/page/report/KPI/chart/table/IBCS/variance + create/build/generate/add, use this skill."
 ---
 
 # PBIR Report Builder
@@ -66,23 +66,10 @@ All reference material is bundled inside this skill at `references/`:
 - `references/json-templates/slicer.json` — slicer dropdown
 - `references/json-templates/donut.json` — donut/pie chart
 - `references/json-templates/page-standard.json` — standard page definition
-- `references/json-templates/page-drillthrough.json` — drillthrough page
 - `references/json-templates/report-settings.json` — report-level settings
 
 **JSON schemas (Microsoft originals):**
 - `references/json-schemas/` — local copies of all PBIR schemas for offline validation
-
-**IBCS Visuals (integrated):**
-- `references/ibcs-visuals/IBCS-SKILL.md` — full IBCS workflow, template selection guide, generation steps
-- `references/ibcs-visuals/references/ibcs-colors.md` — IBCS color palette (actual, comparison, positive, negative)
-- `references/ibcs-visuals/references/ibcs-dax-measures.md` — 15 DAX measure templates for column variance
-- `references/ibcs-visuals/references/ibcs-svg-measures.md` — SVG measure templates for table visuals
-- `references/ibcs-visuals/references/ibcs-column-variance.md` — combo chart visual.json pattern
-- `references/ibcs-visuals/references/ibcs-bar-variance.md` — bar chart with NativeVisualCalculation pattern
-- `references/ibcs-visuals/references/ibcs-table-simple.md` — pivot table with SVG variance bars
-- `references/ibcs-visuals/references/ibcs-table-full.md` — full SVG table (AC, PY bars + variance)
-
-For IBCS visuals, read `references/ibcs-visuals/IBCS-SKILL.md` for the full workflow and template selection guide.
 
 Read the relevant template file when building a visual type you haven't used recently.
 
@@ -92,9 +79,8 @@ Read the relevant template file when building a visual type you haven't used rec
 
 Before using this skill, verify:
 1. **A PBIP project already exists** — user must have saved a `.pbip` from Power BI Desktop
-2. **The semantic model is connected** — the `.SemanticModel/` folder has data tables with columns
-3. **Measures exist** — created in Power BI Desktop
-4. **Power BI Desktop is CLOSED** — files cannot be written while Desktop has the project open
+2. **Measures exist** — created in Power BI Desktop
+3. **Power BI Desktop is CLOSED** — files cannot be written while Desktop has the project open
 
 If the user doesn't have a PBIP yet, instruct them to:
 1. Open Power BI Desktop
@@ -107,12 +93,9 @@ If the user doesn't have a PBIP yet, instruct them to:
 Ask the user:
 1. **Target PBIP project path** — where to write the files (must already exist as a saved PBIP)
 2. **Page name and purpose** — e.g., "Sales Overview", "Product Drillthrough"
-3. **Canvas size** — read from existing `page.json` files or use default 1280x720
+3. **Canvas size** — 1920x1088
 4. **Visuals needed** — what charts/cards/tables, and what data they show
 5. **Measures and columns** — table.field references for each visual (case-sensitive, must match model exactly)
-6. **Layout** — natural language ("4 KPIs at top, bar chart left, line chart right") or pixel positions
-
-If the user has a background SVG, use those exact grid positions.
 
 ### Step 2: Generate the PBIR Files
 
@@ -145,30 +128,6 @@ Tell the user:
 
 ## JSON Structure Reference
 
-### page.json Template
-```json
-{
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
-  "name": "pg01Overview",
-  "displayName": "Overview",
-  "displayOption": "FitToPage",
-  "width": 1280,
-  "height": 720
-}
-```
-
-Canvas sizes:
-- Standard: `1280` x `720`
-- Report: `1300` x `900`
-- Wide: `1600` x `900`
-- Full HD: `1920` x `1080`
-
-Page types:
-- Standard: omit `type` field
-- Drillthrough: add `"type": "Drillthrough"`
-- Tooltip: add `"type": "Tooltip"`, use smaller dimensions (320x240)
-- Hidden: add `"visibility": "HiddenInViewMode"`
-
 ### pages.json — Adding a New Page
 Read existing `pages.json`, add the new page name to `pageOrder`:
 ```json
@@ -185,11 +144,11 @@ Read existing `pages.json`, add the new page name to `pageOrder`:
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
   "name": "v01Kpi",
   "position": {
-    "x": 30,
+    "x": 160,
     "y": 80,
     "z": 1000,
-    "width": 280,
-    "height": 150,
+    "width": 320,
+    "height": 160,
     "tabOrder": 0
   },
   "visual": {
@@ -217,78 +176,11 @@ Read existing `pages.json`, add the new page name to `pageOrder`:
 
 ## Visual Type Patterns
 
-### KPI Card (cardVisual) — The Core Pattern
+### KPI Card
 
-This is the most common visual. Shows a main value, a comparison reference, and a change percentage with conditional coloring.
+**Query roles:** `Values`
 
-**Query roles:**
-- `Data` — main KPI value (e.g., current year measure)
-- `ReferenceLabels` — comparison value (e.g., prior year measure)
-- `AdditionalMeasure` — change metric (e.g., year-over-year % measure)
-
-**Conditional color via measure:** A color measure returns `"#00B050"` (green) or `"#FF0000"` (red) based on performance.
-
-```json
-{
-  "name": "v01Kpi",
-  "position": { "x": 30, "y": 80, "z": 1000, "width": 280, "height": 150, "tabOrder": 0 },
-  "visual": {
-    "visualType": "cardVisual",
-    "objects": {
-      "calloutValue": [{
-        "properties": {
-          "color": {
-            "solid": {
-              "color": {
-                "expr": {
-                  "Measure": {
-                    "Expression": { "SourceRef": { "Entity": "MEASURES_TABLE" } },
-                    "Property": "KPI_COLOR_MEASURE"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }],
-      "cards": [{ "properties": { "showLabel": { "expr": { "Literal": { "Value": "true" } } } } }],
-      "referenceLabel": [{ "properties": { "show": { "expr": { "Literal": { "Value": "true" } } } } }]
-    },
-    "query": {
-      "queryState": {
-        "Data": {
-          "projections": [{
-            "field": { "Measure": { "Expression": { "SourceRef": { "Entity": "MEASURES_TABLE" } }, "Property": "MEASURE_CY" } },
-            "queryRef": "MEASURES_TABLE.MEASURE_CY",
-            "nativeQueryRef": "MEASURE_CY"
-          }]
-        },
-        "ReferenceLabels": {
-          "projections": [{
-            "field": { "Measure": { "Expression": { "SourceRef": { "Entity": "MEASURES_TABLE" } }, "Property": "MEASURE_PY" } },
-            "queryRef": "MEASURES_TABLE.MEASURE_PY",
-            "nativeQueryRef": "MEASURE_PY"
-          }]
-        },
-        "AdditionalMeasure": {
-          "projections": [{
-            "field": { "Measure": { "Expression": { "SourceRef": { "Entity": "MEASURES_TABLE" } }, "Property": "MEASURE_YOY" } },
-            "queryRef": "MEASURES_TABLE.MEASURE_YOY",
-            "nativeQueryRef": "MEASURE_YOY"
-          }]
-        }
-      }
-    },
-    "drillFilterOtherVisuals": true
-  }
-}
-```
-
-**To create multiple KPI cards**, repeat this pattern with different measures and increment:
-- `name`: v01Kpi..., v02Kpi..., v03Kpi..., v04Kpi...
-- `position.x`: space them horizontally (e.g., 30, 320, 610, 900)
-- `position.z`: 1000, 1001, 1002, 1003
-- `position.tabOrder`: 0, 1, 2, 3
+Visual type: `card`
 
 ### Bar/Column Chart
 
@@ -405,65 +297,15 @@ Visual types: `donutChart`, `pieChart`
 
 ## Layout Grid Positions
 
-### Standard Canvas (1280x720) — No Sidebar
+- All visuals must maintain **32px spacing** from the page borders and from other visuals.
+- `X` and `Y` positions must be **multiples of 16**.
+- Visual **width and height** must also be **multiples of 16**.
 
-**4 KPI Cards at Top:**
-| KPI | x | y | width | height |
-|-----|---|---|-------|--------|
-| KPI 1 | 30 | 80 | 280 | 130 |
-| KPI 2 | 330 | 80 | 280 | 130 |
-| KPI 3 | 630 | 80 | 280 | 130 |
-| KPI 4 | 930 | 80 | 280 | 130 |
+**Exception — Page title (textbox):**
+- Must be positioned at `X = 24` and `Y = 24`.
 
-**Header Bar:**
-| Element | x | y | width | height |
-|---------|---|---|-------|--------|
-| Header | 0 | 0 | 1280 | 60 |
-
-**2x2 Visual Grid (below KPIs):**
-| Visual | x | y | width | height |
-|--------|---|---|-------|--------|
-| Top-Left | 30 | 230 | 600 | 230 |
-| Top-Right | 650 | 230 | 600 | 230 |
-| Bottom-Left | 30 | 480 | 600 | 230 |
-| Bottom-Right | 650 | 480 | 600 | 230 |
-
-**Single Large Visual (below KPIs):**
-| Visual | x | y | width | height |
-|--------|---|---|-------|--------|
-| Full Width | 30 | 230 | 1220 | 480 |
-
-### Wide Canvas (1600x900) — With Sidebar
-
-**Header + Sidebar Layout:**
-| Element | x | y | width | height |
-|---------|---|---|-------|--------|
-| Header | 0 | 0 | 1600 | 60 |
-| Sidebar | 0 | 60 | 220 | 840 |
-
-**4 KPI Cards (to the right of sidebar):**
-| KPI | x | y | width | height |
-|-----|---|---|-------|--------|
-| KPI 1 | 240 | 80 | 310 | 130 |
-| KPI 2 | 570 | 80 | 310 | 130 |
-| KPI 3 | 900 | 80 | 310 | 130 |
-| KPI 4 | 1230 | 80 | 310 | 130 |
-
-**2x2 Visual Grid (to the right of sidebar, below KPIs):**
-| Visual | x | y | width | height |
-|--------|---|---|-------|--------|
-| Top-Left | 240 | 230 | 650 | 310 |
-| Top-Right | 910 | 230 | 650 | 310 |
-| Bottom-Left | 240 | 560 | 650 | 310 |
-| Bottom-Right | 910 | 560 | 650 | 310 |
-
-### Z-Order Convention:
-- Slicers/header: z = 500-999
-- KPI cards: z = 1000-1099
-- Main visuals: z = 2000-2099
-- Decorative elements: z = 100-499
-
----
+**Slicers:**
+- Must be placed at the **top-right area of the page**.
 
 ## Implementation Method
 
@@ -529,34 +371,3 @@ Typical workflow:
 2. User closes Desktop
 3. This skill writes page/visual JSON files into the project folder
 4. User reopens Desktop to see new pages
-
----
-
-## IBCS Visuals (Integrated)
-
-This skill includes full support for **IBCS (International Business Communication Standards)** variance charts and tables using only native Power BI visuals — no paid add-ons required.
-
-**Trigger on:** "IBCS", "variance chart", "variance table", "actual vs plan", "actual vs comparison", "AC vs PY"
-
-### IBCS Templates
-
-| # | Template | Visual Type | Measures Generated | Best For |
-|---|----------|-------------|-------------------|----------|
-| 1 | Column Variance Chart | `lineClusteredColumnComboChart` | 15 DAX measures (TMDL) | Time series comparison |
-| 2 | Bar Variance Chart | `barChart` | 2-4 DAX + 13 NativeVisualCalculation | Ranked category comparison |
-| 3 | Variance Table (Simple) | `pivotTable` | 2-3 SVG measures (TMDL) | Table with numeric AC + SVG variance |
-| 4 | Variance Table (Full) | `pivotTable` | 3-4 SVG measures (TMDL) | Full SVG table (AC, PY bars + variance) |
-
-### IBCS Workflow
-
-1. **Collect 3 inputs:** actual measure, comparison measure, category column
-2. **Recommend template** based on analysis type (time trend → column, ranking → bar, detail → table)
-3. **Generate all helper DAX measures** — the skill is 100% measure-agnostic
-4. **Write visual.json** to the PBIP project's report folder
-5. User reloads in Power BI Desktop
-
-### IBCS Color Palette
-- Actual: `#0C3549` (dark blue) | Comparison: `#CCCCCC` (gray)
-- Positive variance: `#44C088` (green) | Negative variance: `#ED7373` (red)
-
-For full IBCS workflow details, template selection, and generation steps, read: `references/ibcs-visuals/IBCS-SKILL.md`
