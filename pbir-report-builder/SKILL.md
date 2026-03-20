@@ -142,6 +142,7 @@ Read existing `pages.json`, add the new page name to `pageOrder`:
   "displayOption": "FitToPage",
   "height": 1088,
   "width": 1920,
+  "filterConfig": { "filters": [] },
   "objects": {
     "displayArea": [{
       "properties": {
@@ -159,7 +160,7 @@ Read existing `pages.json`, add the new page name to `pageOrder`:
 }
 ```
 
-### Visual Interactions (DataFilter)
+#### Visual Interactions (DataFilter)
 
 By default, clicking a data point in one visual **highlights** bar/column and pie/donut charts instead of filtering them. To change this behavior to **filter**, declare `DataFilter` interactions in the page.
 
@@ -204,10 +205,13 @@ For every source→target pair where target is a bar/column or pie/donut, add an
       }
     },
     "objects": {},
+    "visualContainerObjects": {},
     "drillFilterOtherVisuals": true
   }
 }
 ```
+
+`visualContainerObjects` goes inside the `visual` object, alongside `visualType`, `query` and `objects`. Do NOT confuse with `visual.objects` — that controls internal visual formatting (axes, labels, data colors). See `references/formatting-objects.md` for all container properties.
 
 ---
 

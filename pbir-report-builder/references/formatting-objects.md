@@ -74,7 +74,7 @@ Visual formatting in PBIR is controlled through `objects` properties at the visu
 
 ## Container-Level Formatting (visualContainerObjects)
 
-These go in `visual.json` at the top level alongside `position` and `visual`. Exception - `slicer` and `textbox`, which should not have a background, border, or shadow.
+These go inside the `visual` object, alongside `visualType`, `query` and `objects`.
 
 ### Background
 ```json
@@ -145,7 +145,7 @@ These go in `visual.json` at the top level alongside `position` and `visual`. Ex
 
 ## Visual-Level Formatting (objects inside visual)
 
-These go inside the `visual` object, alongside `visualType` and `query`.
+These go inside the `visual` object, alongside `visualType`,  `query` and `visualContainerObjects`.
 
 ### Card Legacy (`card`)
 ```json
