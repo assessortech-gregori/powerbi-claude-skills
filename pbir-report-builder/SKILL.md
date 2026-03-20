@@ -66,12 +66,13 @@ All reference material is bundled inside this skill at `references/`:
 - `references/json-templates/slicer.json` — slicer dropdown
 - `references/json-templates/donut.json` — donut/pie chart
 - `references/json-templates/page-standard.json` — standard page definition
-- `references/json-templates/report-settings.json` — report-level settings
 
 **JSON schemas (Microsoft originals):**
 - `references/json-schemas/` — local copies of all PBIR schemas for offline validation
 
 Read the relevant template file when building a visual type you haven't used recently.
+
+**Note:** JSON templates contain query structure only. Always apply formatting from `references/formatting-objects.md` to every visual.
 
 ## How It Works
 
@@ -93,9 +94,8 @@ If the user doesn't have a PBIP yet, instruct them to:
 Ask the user:
 1. **Target PBIP project path** — where to write the files (must already exist as a saved PBIP)
 2. **Page name and purpose** — e.g., "Sales Overview", "Product Drillthrough"
-3. **Canvas size** — 1920x1088
-4. **Visuals needed** — what charts/cards/tables, and what data they show
-5. **Measures and columns** — table.field references for each visual (case-sensitive, must match model exactly)
+3. **Visuals needed** — what charts/cards/tables, and what data they show
+4. **Measures and columns** — table.field references for each visual (case-sensitive, must match model exactly)
 
 ### Step 2: Generate the PBIR Files
 
@@ -110,12 +110,7 @@ Write files directly into the project's `.Report/definition/` folder.
 
 ### Step 3: Naming Convention
 
-**ALWAYS use readable names:**
-- Pages: `pg01Overview`, `pg02SalesDetail`, `pg03Drillthrough`
-- Visuals: `v01KpiTotalSales`, `v02BarByRegion`, `v03LineTrend`
-- The `name` field inside the JSON MUST match the folder name exactly
-
-See `page-naming.md` for full convention.
+Apply naming convention from `references/page-naming.md`. The `name` field inside JSON MUST match the folder name exactly.
 
 ### Step 4: Deliver
 
@@ -136,6 +131,48 @@ Read existing `pages.json`, add the new page name to `pageOrder`:
   "pageOrder": ["pg01Overview", "pg02NewPage"],
   "activePageName": "pg01Overview"
 }
+```
+
+### page.json — Page Definition
+```json
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "pg01Overview",
+  "displayName": "Overview",
+  "displayOption": "FitToPage",
+  "height": 1088,
+  "width": 1920,
+  "objects": {
+    "displayArea": [{
+      "properties": {
+        "verticalAlignment": { "expr": { "Literal": { "Value": "'Middle'" } } }
+      }
+    }],
+    "background": [{
+      "properties": {
+        "color": { "solid": { "color": { "expr": { "Literal": { "Value": "'#F5F5F5'" } } } } },
+        "transparency": { "expr": { "Literal": { "Value": "0D" } } }
+      }
+    }]
+  },
+  "visualInteractions": []
+}
+```
+
+### Visual Interactions (DataFilter)
+
+By default, clicking a data point in one visual **highlights** bar/column and pie/donut charts instead of filtering them. To change this behavior to **filter**, declare `DataFilter` interactions in the page.
+
+**Only needed when target is:** bar/column chart, pie/donut
+
+**Valid sources (support click selection):** bar/column chart, line chart, pie/donut, table/matrix.
+
+For every source→target pair where target is a bar/column or pie/donut, add an entry:
+```json
+"visualInteractions": [
+  { "source": "v01BarByRegion", "target": "v02ColByMonth", "type": "DataFilter" },
+  { "source": "v02ColByMonth", "target": "v01BarByRegion", "type": "DataFilter" }
+]
 ```
 
 ### visual.json — Visual Container Structure
@@ -176,122 +213,13 @@ Read existing `pages.json`, add the new page name to `pageOrder`:
 
 ## Visual Type Patterns
 
-### KPI Card
-
-**Query roles:** `Values`
-
-Visual type: `card`
-
-### Bar/Column Chart
-
-**Query roles:** `Category` (axis), `Y` (values), `Series` (legend, optional), `Tooltips` (optional)
-
-```json
-"visual": {
-  "visualType": "clusteredColumnChart",
-  "query": {
-    "queryState": {
-      "Category": { "projections": [{
-        "field": { "Column": { "Expression": { "SourceRef": { "Entity": "TABLE" } }, "Property": "COLUMN" } },
-        "queryRef": "TABLE.COLUMN", "nativeQueryRef": "COLUMN"
-      }]},
-      "Y": { "projections": [{
-        "field": { "Measure": { "Expression": { "SourceRef": { "Entity": "MEASURES_TABLE" } }, "Property": "MEASURE" } },
-        "queryRef": "MEASURES_TABLE.MEASURE", "nativeQueryRef": "MEASURE"
-      }]}
-    }
-  },
-  "drillFilterOtherVisuals": true
-}
-```
-
-Visual types: `clusteredColumnChart`, `clusteredBarChart`, `columnChart` (stacked), `barChart` (stacked)
-
-### Line Chart
-
-**Query roles:** `Category` (axis), `Y` (values), `Y2` (secondary axis, optional), `Series` (legend, optional)
-
-```json
-"visual": {
-  "visualType": "lineChart",
-  "query": {
-    "queryState": {
-      "Category": { "projections": [{
-        "field": { "Column": { "Expression": { "SourceRef": { "Entity": "TABLE_NAME" } }, "Property": "COLUMN_NAME" } },
-        "queryRef": "TABLE_NAME.COLUMN_NAME", "nativeQueryRef": "COLUMN_NAME"
-      }]},
-      "Y": { "projections": [{
-        "field": { "Measure": { "Expression": { "SourceRef": { "Entity": "MEASURES_TABLE" } }, "Property": "MEASURE" } },
-        "queryRef": "MEASURES_TABLE.MEASURE", "nativeQueryRef": "MEASURE"
-      }]}
-    }
-  }
-}
-```
-
-### Combo Chart
-
-**Query roles:** `Category`, `ColumnY`, `LineY`, `Series`
-
-Use `ColumnY` for bar values and `LineY` for line values (NOT `Y`).
-Visual type: `lineClusteredColumnComboChart` or `lineStackedColumnComboChart`
-
-### Table
-
-**Query roles:** `Values` — each column/measure is a separate projection in the same array
-
-```json
-"visual": {
-  "visualType": "tableEx",
-  "query": {
-    "queryState": {
-      "Values": { "projections": [
-        { "field": { "Column": { "Expression": { "SourceRef": { "Entity": "TABLE" } }, "Property": "COL1" } }, "queryRef": "TABLE.COL1", "nativeQueryRef": "COL1" },
-        { "field": { "Measure": { "Expression": { "SourceRef": { "Entity": "MTABLE" } }, "Property": "M1" } }, "queryRef": "MTABLE.M1", "nativeQueryRef": "M1" },
-        { "field": { "Measure": { "Expression": { "SourceRef": { "Entity": "MTABLE" } }, "Property": "M2" } }, "queryRef": "MTABLE.M2", "nativeQueryRef": "M2" }
-      ]}
-    }
-  }
-}
-```
-
-### Matrix
-
-**Query roles:** `Rows`, `Columns`, `Values`
-
-Visual type: `pivotTable`
-
-### Slicer
-
-**Query roles:** `Values` — the field to slice by
-
-Visual type: `slicer`
-
-### Donut / Pie
-
-**Query roles:** `Category` (slices), `Y` (value)
-
-Visual types: `donutChart`, `pieChart`
+See `references/visual-types.md` for all 35+ visual types, query roles, and container structure.
 
 ---
 
 ## Field Reference Patterns
 
-### Column (for axes, categories, slicers):
-```json
-{ "Column": { "Expression": { "SourceRef": { "Entity": "TABLE_NAME" } }, "Property": "COLUMN_NAME" } }
-```
-
-### Measure (for values, KPIs):
-```json
-{ "Measure": { "Expression": { "SourceRef": { "Entity": "TABLE_NAME" } }, "Property": "MEASURE_NAME" } }
-```
-
-### Rules:
-- `Entity` = exact table name from semantic model (case-sensitive)
-- `Property` = exact column or measure name (case-sensitive)
-- `queryRef` = `"Table.Field"` (dot-separated)
-- `nativeQueryRef` = just the field name
+See `references/field-references.md` for Column, Measure, Aggregation patterns and literal value types.
 
 ---
 
@@ -301,50 +229,13 @@ Visual types: `donutChart`, `pieChart`
 - `X` and `Y` positions must be **multiples of 16**.
 - Visual **width and height** must also be **multiples of 16**.
 
-**Exception — Page title (textbox):**
-- Must be positioned at `X = 24` and `Y = 24`.
+**Page title (textbox):** `x: 32`, `y: 16`, `height: 80`. No background, border, or shadow.
 
-**Slicers:**
-- Must be placed at the **top-right area of the page**.
+**Slicers:** Top-right area, `y: 16`, `height: 80`. No background, border, or shadow.
+
+---
 
 ## Implementation Method
-
-### Writing Files
-
-Use Node.js (.mjs) scripts to write files. This avoids the EEXIST error that the Write tool encounters on paths with spaces.
-
-```javascript
-import { writeFileSync, mkdirSync, readFileSync } from 'fs';
-import { join } from 'path';
-
-const projectBase = 'PATH_TO_PBIP_PROJECT';
-const reportDef = join(projectBase, 'ProjectName.Report', 'definition');
-
-// 1. Create page folder
-const pageDir = join(reportDef, 'pages', 'pg01Overview');
-const visualsDir = join(pageDir, 'visuals');
-mkdirSync(visualsDir, { recursive: true });
-
-// 2. Write page.json
-writeFileSync(join(pageDir, 'page.json'), JSON.stringify(pageJson, null, 2), 'utf8');
-
-// 3. Create visual folders and write visual.json files
-for (const visual of visuals) {
-  const vDir = join(visualsDir, visual.name);
-  mkdirSync(vDir, { recursive: true });
-  writeFileSync(join(vDir, 'visual.json'), JSON.stringify(visual, null, 2), 'utf8');
-}
-
-// 4. Update pages.json
-const pagesJsonPath = join(reportDef, 'pages', 'pages.json');
-const pagesJson = JSON.parse(readFileSync(pagesJsonPath, 'utf8'));
-if (!pagesJson.pageOrder.includes('pg01Overview')) {
-  pagesJson.pageOrder.push('pg01Overview');
-}
-writeFileSync(pagesJsonPath, JSON.stringify(pagesJson, null, 2), 'utf8');
-```
-
-Save the script as `.mjs` (not `.js`) in the `07-PowerBI/` folder and run with `node script.mjs`.
 
 ### Important Caveats
 

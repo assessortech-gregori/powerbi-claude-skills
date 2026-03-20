@@ -40,7 +40,7 @@ MyProject/
 │       │
 │       ├── report.json                          # REQUIRED: Report-level settings
 │       │                                        # Theme, filters, settings, resourcePackages
-│       │                                        # Schema: .../report/3.2.0
+│       │                                        # Schema: .../report/3.0.0
 │       │
 │       ├── reportExtensions.json                # Report-level measures (optional)
 │       │                                        # Only if measures defined at report level
@@ -58,7 +58,7 @@ MyProject/
 │       │   │   │                                # name, displayName, width, height,
 │       │   │   │                                # displayOption, objects (background),
 │       │   │   │                                # filterConfig, type, visibility
-│       │   │   │                                # Schema: .../page/2.1.0
+│       │   │   │                                # Schema: .../page/2.0.0
 │       │   │   │
 │       │   │   └── visuals/
 │       │   │       │
@@ -66,7 +66,7 @@ MyProject/
 │       │   │       │   ├── visual.json          # REQUIRED: Visual definition
 │       │   │       │   │                        # position {x,y,z,width,height}
 │       │   │       │   │                        # visual {visualType, query, objects}
-│       │   │       │   │                        # Schema: .../visualContainer/2.7.0
+│       │   │       │   │                        # Schema: .../visualContainer/2.0.0
 │       │   │       │   └── mobile.json          # Mobile layout (optional)
 │       │   │       │
 │       │   │       ├── v02BarByRegion/

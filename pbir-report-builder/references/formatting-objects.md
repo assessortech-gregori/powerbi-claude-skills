@@ -74,7 +74,7 @@ Visual formatting in PBIR is controlled through `objects` properties at the visu
 
 ## Container-Level Formatting (visualContainerObjects)
 
-These go in `visual.json` at the top level alongside `position` and `visual`. Apply them to every visual, except for `card` and `textbox`, which should not have a background, border, or shadow.
+These go in `visual.json` at the top level alongside `position` and `visual`. Exception - `slicer` and `textbox`, which should not have a background, border, or shadow.
 
 ### Background
 ```json
@@ -231,6 +231,35 @@ These go inside the `visual` object, alongside `visualType` and `query`.
       "fontSize": { "expr": { "Literal": { "Value": "14D" } } },
       "fontColor": { "solid": { "color": { "expr": { "Literal": { "Value": "'#444444'" } } } } },
       "bold": { "expr": { "Literal": { "Value": "true" } } }
+    }
+  }]
+}
+```
+
+### Donut (`donutChart`)
+```json
+"objects": {
+  "legend": [{
+    "properties": {
+      "show": { "expr": { "Literal": { "Value": "true" } } },
+      "showTitle": { "expr": { "Literal": { "Value": "false" } } },
+      "fontSize": { "expr": { "Literal": { "Value": "16D" } } },
+      "position": { "expr": { "Literal": { "Value": "'RightCenter'" } } },
+      "labelColor": { "solid": { "color": { "expr": { "Literal": { "Value": "'#666666'" } } } } }
+    }
+  }],
+  "labels": [{
+    "properties": {
+      "show": { "expr": { "Literal": { "Value": "true" } } },
+      "fontSize": { "expr": { "Literal": { "Value": "14D" } } },
+      "labelDisplayUnits": { "expr": { "Literal": { "Value": "1D" } } },
+      "labelPrecision": { "expr": { "Literal": { "Value": "0L" } } },
+      "labelStyle": { "expr": { "Literal": { "Value": "'Data value, percent of total'" } } }
+    }
+  }],
+  "slices": [{
+    "properties": {
+      "innerRadiusRatio": { "expr": { "Literal": { "Value": "60L" } } }
     }
   }]
 }

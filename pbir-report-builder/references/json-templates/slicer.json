@@ -1,13 +1,12 @@
 {
-  "_comment": "Slicer — Single field in Values role",
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
   "name": "v08Slicer",
   "position": {
-    "x": 30,
-    "y": 30,
+    "x": 1584,
+    "y": 16,
     "z": 500,
-    "width": 200,
-    "height": 50,
+    "width": 320,
+    "height": 80,
     "tabOrder": 7
   },
   "visual": {

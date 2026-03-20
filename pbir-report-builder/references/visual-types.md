@@ -8,10 +8,9 @@ Every visual in PBIR is defined by a `visual.json` file. The `visualType` string
 | visualType | Display Name | Query Roles |
 |---|---|---|
 | `cardVisual` | Card (new) | `Data`, `ReferenceLabels`, `AdditionalMeasure` |
-| `card` | Card (legacy) | `Fields` |
-| `multiRowCard` | Multi-Row Card | `Fields` |
+| `card` | Card (legacy) | `Values` |
+| `multiRowCard` | Multi-Row Card | `Values` |
 | `kpi` | KPI | `Indicator`, `TrendLine`, `Goal` |
-| `animatedNumber` | Animated Number | `Fields` |
 
 ### Bar & Column Charts
 | visualType | Display Name | Query Roles |
@@ -124,7 +123,7 @@ Every `visual.json` has this outer structure:
 
 ```json
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
   "name": "v01KpiTotalSales",
   "position": {
     "x": 16,
