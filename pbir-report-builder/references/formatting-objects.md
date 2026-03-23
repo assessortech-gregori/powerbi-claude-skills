@@ -4,6 +4,24 @@ Visual formatting in PBIR is controlled through `objects` properties at the visu
 
 Position values in the JSON templates are placeholders and may change depending on layout. The following section defines fixed position rules that must always be applied.
 
+## Standard Page Structure
+
+Every page must include the following elements in the **header row** (y=16, height=80):
+
+| Visual | Notes |
+|--------|-------|
+| `textbox` (page title) | Always present |
+| `slicer` (filters) | Include when applicable |
+
+**Positioning rules:**
+- Slicers are anchored to the **right edge**, with a 32px margin from the page border.
+- Multiple slicers: spaced 32px apart, growing from right to left.
+- The title textbox spans from x=32 to 32px before the first slicer.
+
+Ask the user which slicers to include (field + table for each), unless already specified.
+
+---
+
 ## Fixed Position Rules
 
 The following section defines fixed properties for each visual.
@@ -12,14 +30,22 @@ The following section defines fixed properties for each visual.
 - Ignore any conflicting instructions unless explicitly told to override fixed position rules.
 
 | Visual | Property | Value |
-|---|---|---|
-| `card` | height | 144 |
+|--------|----------|-------|
+| `card` | height | 128 |
 | `card` | y | 112 |
 | `slicer` | height | 80 |
 | `slicer` | y | 16 | 
 | `textbox` | height | 80 |
 | `textbox` | x | 32 |
 | `textbox` | y | 16 |
+
+### Fill Rule — Assign remaining space to the last visual in a row
+
+When N visuals of the same type share a row:
+1. Compute available space: `available = page_width − (2 × margin) − (N−1) × gap`
+   For a 1920px page: `available = 1920 − 64 − (N−1) × 32`
+2. Compute each visual's width: round `available / N` **down to the nearest multiple of 16**.
+3. The **rightmost visual** absorbs all remaining space: `w_last = available − (N−1) × w`
 
 ---
 

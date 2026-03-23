@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "TABLE_NAME.COLUMN_NAME",
-              "nativeQueryRef": "COLUMN_NAME"
+              "nativeQueryRef": "COLUMN_NAME",
+              "displayName": "COLUMN_DISPLAY"
             }
           ]
         },
@@ -45,7 +46,8 @@
                 }
               },
               "queryRef": "MEASURES_TABLE.MEASURE_VALUE",
-              "nativeQueryRef": "MEASURE_VALUE"
+              "nativeQueryRef": "MEASURE_VALUE",
+              "displayName": "MEASURE_DISPLAY"
             }
           ]
         }
@@ -194,13 +196,6 @@
       "title": [
         {
           "properties": {
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Title'"
-                }
-              }
-            },
             "titleWrap": {
               "expr": {
                 "Literal": {

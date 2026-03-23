@@ -6,7 +6,7 @@
     "y": 112,
     "z": 1000,
     "width": 320,
-    "height": 144,
+    "height": 128,
     "tabOrder": 0
   },
   "visual": {
@@ -28,7 +28,7 @@
               },
               "queryRef": "MEASURES_TABLE.MEASURE_VALUE",
               "nativeQueryRef": "MEASURE_VALUE",
-              "displayName": "DISPLAY_NAME"
+              "displayName": "MEASURE_DISPLAY"
             }
           ]
         }
@@ -111,14 +111,14 @@
             "top": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "0D"
                 }
               }
             },
             "bottom": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "16D"
                 }
               }
             },

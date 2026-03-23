@@ -96,7 +96,7 @@ Each visual type has named "wells" (data roles) that accept field projections. T
           "field": { ... },           // Column or Measure reference
           "queryRef": "Table.Field",  // Dot-separated table.field
           "nativeQueryRef": "Field",  // Just the field name
-          "displayName": "Label"      // Optional display override
+          "displayName": "Label"      // Clean label
         }
       ]
     }

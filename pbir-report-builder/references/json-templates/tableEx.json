@@ -27,21 +27,8 @@
                 }
               },
               "queryRef": "TABLE_NAME.COLUMN_NAME",
-              "nativeQueryRef": "COLUMN_NAME"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "TABLE_NAME_2"
-                    }
-                  },
-                  "Property": "COLUMN_NAME_2"
-                }
-              },
-              "queryRef": "TABLE_NAME_2.COLUMN_NAME_2",
-              "nativeQueryRef": "COLUMN_NAME_2"
+              "nativeQueryRef": "COLUMN_NAME",
+              "displayName": "COLUMN_DISPLAY"
             },
             {
               "field": {
@@ -55,21 +42,8 @@
                 }
               },
               "queryRef": "MEASURES_TABLE.MEASURE_VALUE",
-              "nativeQueryRef": "MEASURE_VALUE"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "MEASURES_TABLE"
-                    }
-                  },
-                  "Property": "MEASURE_VALUE_2"
-                }
-              },
-              "queryRef": "MEASURES_TABLE.MEASURE_VALUE_2",
-              "nativeQueryRef": "MEASURE_VALUE_2"
+              "nativeQueryRef": "MEASURE_VALUE",
+              "displayName": "MEASURE_DISPLAY"
             }
           ]
         }
@@ -302,13 +276,6 @@
       "title": [
         {
           "properties": {
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Title'"
-                }
-              }
-            },
             "titleWrap": {
               "expr": {
                 "Literal": {

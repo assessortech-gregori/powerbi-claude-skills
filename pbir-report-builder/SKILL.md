@@ -156,6 +156,7 @@ Key properties to substitute in the template:
 - `name` — must match the folder name exactly
 - `position` — x, y, z, width, height, tabOrder (apply Fixed Position Rules from `formatting-objects.md`)
 - `query.queryState` — replace all placeholder table/field names with actual model values (case-sensitive)
+- `displayName` — set a short, user-friendly label for each field projection (measures especially).
 
 ---
 

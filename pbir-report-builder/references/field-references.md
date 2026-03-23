@@ -17,7 +17,8 @@ Use when binding a column from a table (for axes, categories, slicers):
     }
   },
   "queryRef": "TableName.ColumnName",
-  "nativeQueryRef": "ColumnName"
+  "nativeQueryRef": "ColumnName",
+  "displayName": "ColumnDisplay"
 }
 ```
 
@@ -33,7 +34,8 @@ Use when binding a column from a table (for axes, categories, slicers):
     }
   },
   "queryRef": "TABLE_NAME.COLUMN_NAME",
-  "nativeQueryRef": "COLUMN_NAME"
+  "nativeQueryRef": "COLUMN_NAME",
+  "displayName": "COLUMN_DISPLAY"
 }
 ```
 
@@ -52,7 +54,8 @@ Use when binding a DAX measure (for values, KPIs, totals):
     }
   },
   "queryRef": "TableName.MeasureName",
-  "nativeQueryRef": "MeasureName"
+  "nativeQueryRef": "MeasureName",
+  "displayName": "MeasureDisplay"
 }
 ```
 
@@ -68,7 +71,8 @@ Use when binding a DAX measure (for values, KPIs, totals):
     }
   },
   "queryRef": "MEASURES_TABLE.MEASURE_VALUE",
-  "nativeQueryRef": "MEASURE_VALUE"
+  "nativeQueryRef": "MEASURE_VALUE",
+  "displayName": "MEASURE_DISPLAY"
 }
 ```
 
@@ -92,7 +96,8 @@ Use when you want Power BI to aggregate a column (SUM, AVG, COUNT, etc.) instead
     }
   },
   "queryRef": "Sum(TableName.ColumnName)",
-  "nativeQueryRef": "Sum of ColumnName"
+  "nativeQueryRef": "ColumnName",
+  "displayName": "Sum of ColumnName"
 }
 ```
 
@@ -168,7 +173,8 @@ A clustered column chart with a category axis and two measures (CY vs PY):
             }
           },
           "queryRef": "TABLE_NAME.COLUMN_NAME",
-          "nativeQueryRef": "COLUMN_NAME"
+          "nativeQueryRef": "COLUMN_NAME",
+          "displayName": "COLUMN_DISPLAY"
         }
       ]
     },
@@ -192,7 +198,8 @@ A clustered column chart with a category axis and two measures (CY vs PY):
             }
           },
           "queryRef": "MEASURES_TABLE.MEASURE_COMPARISON",
-          "nativeQueryRef": "MEASURE_COMPARISON"
+          "nativeQueryRef": "MEASURE_COMPARISON",
+          "displayName": "MEASURE_DISPLAY"
         }
       ]
     }
@@ -205,6 +212,7 @@ A clustered column chart with a category axis and two measures (CY vs PY):
 1. **Entity** must match a table name in the semantic model exactly (case-sensitive)
 2. **Property** must match a column or measure name exactly (case-sensitive)
 3. **queryRef** format: `TableName.FieldName` (dot-separated)
-4. **nativeQueryRef**: just the field name (used for display)
-5. Multiple fields in one role = multiple projections in the array
-6. The `active: true` flag on the first projection indicates it's the primary field
+4. **nativeQueryRef**: raw field name without table prefix — must match `Property` exactly
+5. **displayName**: user-friendly label shown in titles, legends, and axis labels. Use to shorten or clean up long technical measure names.
+6. Multiple fields in one role = multiple projections in the array
+7. The `active: true` flag on the first projection indicates it's the primary field
