@@ -23,6 +23,14 @@ Visual formatting in PBIR is controlled through `objects` properties at the visu
 | 8 | `#2B2F38` | Standout color 1
 | 9 | `#F4A261` | Standout color 2
 
+Bar charts:
+- Use theme colors starting from ColorId 2 (main colors).
+- Assign colors sequentially (2, 3, 4, 5...) based on category order.
+
+Line charts:
+- Use secondary colors (ColorId 6 and 7).
+- Use ColorId 6 for the first line and 7 for the second.
+
 ### Fixed Interface Colors (always use literal hex, never ThemeDataColor)
 
 | Element | Hex |
@@ -39,11 +47,11 @@ Visual formatting in PBIR is controlled through `objects` properties at the visu
 | Level | Size | Font | Usage |
 |---|---|---|---|
 | 1 | 32pt | Segoe UI Semibold | Page title (textbox) |
-| 2 | 24pt | DIN | Visual title |
-| 3 | 16pt | DIN | Slicer header |
-| 4 | 16pt | Segoe UI | Table header, legend |
+| 2 | 24pt | Default | Visual title |
+| 3 | 16pt | Default | Slicer header |
+| 4 | 16pt | Segoe UI | Table header, legend, KPI label |
 | 5 | 14pt | Segoe UI | Data labels, table values, slicer items |
-| 6 | 48pt | Segoe UI | Card/KPI Value |
+| 6 | 48pt | Segoe UI | Card Value |
 
 ---
 
@@ -107,7 +115,6 @@ These go inside the `visual` object, alongside `visualType`, `query` and `object
     "text": { "expr": { "Literal": { "Value": "'Sales Overview'" } } },
     "fontColor": { "solid": { "color": { "expr": { "Literal": { "Value": "'#444444'" } } } } },
     "fontSize": { "expr": { "Literal": { "Value": "24D" } } },
-    "fontFamily": { "expr": { "Literal": { "Value": "'DIN'" } } },
     "alignment": { "expr": { "Literal": { "Value": "'left'" } } }
   }
 }]
@@ -139,6 +146,18 @@ These go inside the `visual` object, alongside `visualType`, `query` and `object
     "right": { "expr": { "Literal": { "Value": "16D" } } }
   }
 }]
+```
+
+**Exceptions**
+
+`card`, `slicer` and `textbox` should never have background, border, shadow, or title in `visualContainerObjects`:
+```json
+"visualContainerObjects": {
+  "background": [{ "properties": { "show": { "expr": { "Literal": { "Value": "false" } } } } }],
+  "border":     [{ "properties": { "show": { "expr": { "Literal": { "Value": "false" } } } } }],
+  "dropShadow": [{ "properties": { "show": { "expr": { "Literal": { "Value": "false" } } } } }],
+  "title":      [{ "properties": { "show": { "expr": { "Literal": { "Value": "false" } } } } }]
+}
 ```
 
 ---
@@ -183,8 +202,7 @@ These go inside the `visual` object, alongside `visualType`,  `query` and `visua
     "properties": {
       "show": { "expr": { "Literal": { "Value": "true" } } },
       "fontColor": { "solid": { "color": { "expr": { "Literal": { "Value": "'#444444'" } } } } },
-      "fontSize": { "expr": { "Literal": { "Value": "16D" } } },
-      "fontFamily": { "expr": { "Literal": { "Value": "'DIN'" } } }
+      "fontSize": { "expr": { "Literal": { "Value": "16D" } } }
     }
   }],
   "items": [{

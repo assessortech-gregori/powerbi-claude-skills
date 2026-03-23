@@ -134,7 +134,7 @@ Every `visual.json` has this outer structure:
     "tabOrder": 0
   },
   "visual": {
-    "visualType": "cardVisual",
+    "visualType": "card",
     "query": { ... },
     "objects": { ... },
     "drillFilterOtherVisuals": true

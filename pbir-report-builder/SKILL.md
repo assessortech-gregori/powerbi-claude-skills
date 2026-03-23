@@ -56,7 +56,8 @@ All reference material is bundled inside this skill at `references/`:
 - `references/page-naming.md` — readable naming convention (pg##/v## rules)
 
 **JSON templates (ready-to-use):**
-- `references/json-templates/card-kpi.json` — KPI card with CY, PY, YoY%, conditional color
+- `references/json-templates/card.json` — Legacy Card
+- `references/json-templates/card-visual.json` — KPI card with CY, PY, YoY%, conditional color — **avoid; use `card` instead**
 - `references/json-templates/clustered-column.json` — vertical bar chart
 - `references/json-templates/clustered-bar.json` — horizontal bar chart
 - `references/json-templates/line-chart.json` — line trend over time
@@ -72,7 +73,7 @@ All reference material is bundled inside this skill at `references/`:
 
 Read the relevant template file when building a visual type you haven't used recently.
 
-**Note:** JSON templates contain query structure only. Always apply formatting from `references/formatting-objects.md` to every visual.
+**Important:** JSON templates define the `query` structure only — they do not include visual formatting. When building any visual, you must compose two separate parts: the `query` block from the relevant template, and the `objects` and `visualContainerObjects` blocks built from the patterns in `references/formatting-objects.md`. Never skip the objects block because it is absent from the template — default Power BI values will apply and will not match the design spec.
 
 ## How It Works
 
@@ -190,7 +191,7 @@ For every source→target pair where target is a bar/column or pie/donut, add an
     "tabOrder": 0
   },
   "visual": {
-    "visualType": "cardVisual",
+    "visualType": "card",
     "query": {
       "queryState": {
         "ROLE_NAME": {
