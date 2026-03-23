@@ -1,56 +1,48 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
-  "name": "v07Matrix",
+  "name": "v06Table",
   "position": {
     "x": 32,
-    "y": 112,
+    "y": 800,
     "z": 2000,
-    "width": 800,
-    "height": 480,
-    "tabOrder": 6
+    "width": 1856,
+    "height": 256,
+    "tabOrder": 5
   },
   "visual": {
-    "visualType": "pivotTable",
+    "visualType": "tableEx",
     "query": {
       "queryState": {
-        "Rows": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "TABLE_NAME"
-                    }
-                  },
-                  "Property": "COLUMN_NAME"
-                }
-              },
-              "queryRef": "TABLE_NAME.COLUMN_NAME",
-              "nativeQueryRef": "COLUMN_NAME"
-            }
-          ]
-        },
-        "Columns": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "TABLE_NAME"
-                    }
-                  },
-                  "Property": "COLUMN_NAME"
-                }
-              },
-              "queryRef": "TABLE_NAME.COLUMN_NAME",
-              "nativeQueryRef": "COLUMN_NAME"
-            }
-          ]
-        },
         "Values": {
           "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "TABLE_NAME"
+                    }
+                  },
+                  "Property": "COLUMN_NAME"
+                }
+              },
+              "queryRef": "TABLE_NAME.COLUMN_NAME",
+              "nativeQueryRef": "COLUMN_NAME"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "TABLE_NAME_2"
+                    }
+                  },
+                  "Property": "COLUMN_NAME_2"
+                }
+              },
+              "queryRef": "TABLE_NAME_2.COLUMN_NAME_2",
+              "nativeQueryRef": "COLUMN_NAME_2"
+            },
             {
               "field": {
                 "Measure": {
@@ -64,6 +56,20 @@
               },
               "queryRef": "MEASURES_TABLE.MEASURE_VALUE",
               "nativeQueryRef": "MEASURE_VALUE"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "MEASURES_TABLE"
+                    }
+                  },
+                  "Property": "MEASURE_VALUE_2"
+                }
+              },
+              "queryRef": "MEASURES_TABLE.MEASURE_VALUE_2",
+              "nativeQueryRef": "MEASURE_VALUE_2"
             }
           ]
         }
@@ -267,24 +273,13 @@
           }
         }
       ],
-      "rowHeaders": [
+      "total": [
         {
           "properties": {
-            "outlineColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#444444'"
-                    }
-                  }
-                }
-              }
-            },
-            "fontSize": {
+            "outlineStyle": {
               "expr": {
                 "Literal": {
-                  "Value": "16D"
+                  "Value": "0D"
                 }
               }
             },
@@ -298,52 +293,7 @@
                   }
                 }
               }
-            },
-            "expandCollapseButtonsSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "14D"
-                }
-              }
             }
-          }
-        }
-      ],
-      "subTotals": [
-        {
-          "properties": {
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#222222'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "id": "Column"
-          }
-        },
-        {
-          "properties": {
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#222222'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "id": "Row"
           }
         }
       ]

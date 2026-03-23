@@ -78,7 +78,7 @@ By default, Power BI generates random 20-character hex IDs for page and visual f
 // pg01Overview/visuals/v01KpiTotalSales/visual.json
 {
   "name": "v01KpiTotalSales",
-  "position": { "x": 16, "y": 80, ... },
+  "position": { "x": 32, "y": 80, ... },
   "visual": { "visualType": "cardVisual", ... }
 }
 ```

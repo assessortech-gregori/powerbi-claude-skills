@@ -7,8 +7,8 @@ Every visual in PBIR is defined by a `visual.json` file. The `visualType` string
 ### Cards & KPIs
 | visualType | Display Name | Query Roles |
 |---|---|---|
-| `cardVisual` | Card (new) | `Data`, `ReferenceLabels`, `AdditionalMeasure` |
 | `card` | Card (legacy) | `Values` |
+| `cardVisual` | Card (new) | `Data`, `ReferenceLabels`, `AdditionalMeasure` |
 | `multiRowCard` | Multi-Row Card | `Values` |
 | `kpi` | KPI | `Indicator`, `TrendLine`, `Goal` |
 
@@ -34,8 +34,8 @@ Every visual in PBIR is defined by a `visual.json` file. The `visualType` string
 ### Combo Charts
 | visualType | Display Name | Query Roles |
 |---|---|---|
-| `lineStackedColumnComboChart` | Line + Stacked Column | `Category`, `ColumnY`, `LineY`, `Series`, `Tooltips` |
-| `lineClusteredColumnComboChart` | Line + Clustered Column | `Category`, `ColumnY`, `LineY`, `Series`, `Tooltips` |
+| `lineStackedColumnComboChart` | Line + Stacked Column | `Category`, `Y`, `Y2`, `Series`, `Tooltips` |
+| `lineClusteredColumnComboChart` | Line + Clustered Column | `Category`, `Y`, `Y2`, `Series`, `Tooltips` |
 
 ### Pie & Donut
 | visualType | Display Name | Query Roles |
@@ -108,6 +108,7 @@ Each visual type has named "wells" (data roles) that accept field projections. T
 
 **Bar/Column/Line charts**: `Category` (axis), `Y` (values), `Series` (legend), `Tooltips`
 **Combo charts**: `Category`, `ColumnY`, `LineY`, `Series`, `Tooltips`
+**Legacy Card (card)**: `Values`
 **New Card (cardVisual)**: `Data` (main value), `ReferenceLabels` (comparison), `AdditionalMeasure` (extra)
 **Table**: `Values` (all columns as separate projections)
 **Matrix**: `Rows`, `Columns`, `Values`
@@ -116,31 +117,6 @@ Each visual type has named "wells" (data roles) that accept field projections. T
 **KPI**: `Indicator`, `TrendLine`, `Goal`
 
 ---
-
-## Visual Container Structure
-
-Every `visual.json` has this outer structure:
-
-```json
-{
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
-  "name": "v01KpiTotalSales",
-  "position": {
-    "x": 16,
-    "y": 80,
-    "z": 1000,
-    "width": 320,
-    "height": 160,
-    "tabOrder": 0
-  },
-  "visual": {
-    "visualType": "card",
-    "query": { ... },
-    "objects": { ... },
-    "drillFilterOtherVisuals": true
-  }
-}
-```
 
 ### Position Properties
 | Property | Type | Description |

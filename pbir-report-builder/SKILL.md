@@ -51,29 +51,26 @@ All reference material is bundled inside this skill at `references/`:
 **Reference docs:**
 - `references/visual-types.md` — all 35+ visual type identifiers and query roles
 - `references/field-references.md` — column/measure binding patterns, aggregation codes, conditional formatting
-- `references/formatting-objects.md` — container/visual/page formatting JSON patterns
+- `references/formatting-objects.md` — fixed position rules per visual type and color palette reference
 - `references/folder-structure.md` — annotated PBIP/PBIR/TMDL folder tree
 - `references/page-naming.md` — readable naming convention (pg##/v## rules)
 
 **JSON templates (ready-to-use):**
-- `references/json-templates/card.json` — Legacy Card
-- `references/json-templates/card-visual.json` — KPI card with CY, PY, YoY%, conditional color — **avoid; use `card` instead**
-- `references/json-templates/clustered-column.json` — vertical bar chart
-- `references/json-templates/clustered-bar.json` — horizontal bar chart
-- `references/json-templates/line-chart.json` — line trend over time
-- `references/json-templates/combo-chart.json` — column + line combo
-- `references/json-templates/table.json` — table with multiple columns/measures
-- `references/json-templates/matrix.json` — pivot table with rows/columns/values
-- `references/json-templates/slicer.json` — slicer dropdown
-- `references/json-templates/donut.json` — donut/pie chart
-- `references/json-templates/page-standard.json` — standard page definition
+- `references/json-templates/card.json` — Legacy KPI Card
+- `references/json-templates/clusteredColumnChart.json` — Vertical bar chart
+- `references/json-templates/clusteredBarChart.json` — Horizontal bar chart
+- `references/json-templates/lineChart.json` — Line chart
+- `references/json-templates/comboChart.json` — Column + line combo chart
+- `references/json-templates/tableEx.json` — Table with multiple columns/measures
+- `references/json-templates/matrix.json` — Pivot table with rows/columns/values
+- `references/json-templates/slicer.json` — Slicer dropdown
+- `references/json-templates/donutChart.json` — Donut/pie chart
+- `references/json-templates/page.json` — Standard page definition
 
 **JSON schemas (Microsoft originals):**
 - `references/json-schemas/` — local copies of all PBIR schemas for offline validation
 
-Read the relevant template file when building a visual type you haven't used recently.
-
-**Important:** JSON templates define the `query` structure only — they do not include visual formatting. When building any visual, you must compose two separate parts: the `query` block from the relevant template, and the `objects` and `visualContainerObjects` blocks built from the patterns in `references/formatting-objects.md`. Never skip the objects block because it is absent from the template — default Power BI values will apply and will not match the design spec.
+Always read the relevant template file before building any visual. Templates contain the complete and correct formatting for that visual type.
 
 ## How It Works
 
@@ -134,40 +131,13 @@ Read existing `pages.json`, add the new page name to `pageOrder`:
 }
 ```
 
-### page.json — Page Definition
-```json
-{
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
-  "name": "pg01Overview",
-  "displayName": "Overview",
-  "displayOption": "FitToPage",
-  "height": 1088,
-  "width": 1920,
-  "filterConfig": { "filters": [] },
-  "objects": {
-    "displayArea": [{
-      "properties": {
-        "verticalAlignment": { "expr": { "Literal": { "Value": "'Middle'" } } }
-      }
-    }],
-    "background": [{
-      "properties": {
-        "color": { "solid": { "color": { "expr": { "Literal": { "Value": "'#F5F5F5'" } } } } },
-        "transparency": { "expr": { "Literal": { "Value": "0D" } } }
-      }
-    }]
-  },
-  "visualInteractions": []
-}
-```
-
 #### Visual Interactions (DataFilter)
 
 By default, clicking a data point in one visual **highlights** bar/column and pie/donut charts instead of filtering them. To change this behavior to **filter**, declare `DataFilter` interactions in the page.
 
-**Only needed when target is:** bar/column chart, pie/donut
-
 **Valid sources (support click selection):** bar/column chart, line chart, pie/donut, table/matrix.
+
+**Valid targets:** bar/column chart, pie/donut
 
 For every source→target pair where target is a bar/column or pie/donut, add an entry:
 ```json
@@ -178,41 +148,14 @@ For every source→target pair where target is a bar/column or pie/donut, add an
 ```
 
 ### visual.json — Visual Container Structure
-```json
-{
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
-  "name": "v01Kpi",
-  "position": {
-    "x": 160,
-    "y": 80,
-    "z": 1000,
-    "width": 320,
-    "height": 160,
-    "tabOrder": 0
-  },
-  "visual": {
-    "visualType": "card",
-    "query": {
-      "queryState": {
-        "ROLE_NAME": {
-          "projections": [
-            {
-              "field": { "..." : "..." },
-              "queryRef": "Table.Field",
-              "nativeQueryRef": "Field"
-            }
-          ]
-        }
-      }
-    },
-    "objects": {},
-    "visualContainerObjects": {},
-    "drillFilterOtherVisuals": true
-  }
-}
-```
 
-`visualContainerObjects` goes inside the `visual` object, alongside `visualType`, `query` and `objects`. Do NOT confuse with `visual.objects` — that controls internal visual formatting (axes, labels, data colors). See `references/formatting-objects.md` for all container properties.
+Each visual is a folder `v##Name/` containing a single `visual.json`.  
+**Always start from the relevant template in `references/json-templates/`** — it contains the complete structure including `query`, `objects`, and `visualContainerObjects`.
+
+Key properties to substitute in the template:
+- `name` — must match the folder name exactly
+- `position` — x, y, z, width, height, tabOrder (apply Fixed Position Rules from `formatting-objects.md`)
+- `query.queryState` — replace all placeholder table/field names with actual model values (case-sensitive)
 
 ---
 
@@ -228,15 +171,13 @@ See `references/field-references.md` for Column, Measure, Aggregation patterns a
 
 ---
 
-## Layout Grid Positions
+## Layout Grid Rules
 
-- All visuals must maintain **32px spacing** from the page borders and from other visuals.
-- `X` and `Y` positions must be **multiples of 16**.
-- Visual **width and height** must also be **multiples of 16**.
+**Important** — All visuals must follow the layout grid. These rules are mandatory and must always be respected.
 
-**Page title (textbox):** `x: 32`, `y: 16`, `height: 80`. No background, border, or shadow.
-
-**Slicers:** Top-right area, `y: 16`, `height: 80`. No background, border, or shadow.
+- Maintain 32px spacing from page borders and between visuals.
+- X and Y positions must be multiples of 16.
+- Width and height must be multiples of 16.
 
 ---
 
