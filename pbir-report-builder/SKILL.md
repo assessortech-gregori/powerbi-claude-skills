@@ -73,6 +73,8 @@ All reference material is bundled inside this skill at `references/`:
 
 Always read the relevant template file before building any visual. Templates contain the complete and correct formatting for that visual type.
 
+**Important** — All style values defined in templates (font families, font sizes, colors, padding, borders, and shadows) are mandatory standards and must be followed exactly as written. Only position and size properties (x, y, width, height, tabOrder) vary based on layout.
+
 ## How It Works
 
 ### Step 1: Gather Requirements
