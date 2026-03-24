@@ -51,7 +51,7 @@ All reference material is bundled inside this skill at `references/`:
 **Reference docs:**
 - `references/visual-types.md` — all 35+ visual type identifiers and query roles
 - `references/field-references.md` — column/measure binding patterns, aggregation codes, conditional formatting
-- `references/formatting-objects.md` — fixed position rules per visual type and color palette reference
+- `references/layout-rules.md` — fixed position rules per visual type and color palette reference
 - `references/folder-structure.md` — annotated PBIP/PBIR/TMDL folder tree
 - `references/page-naming.md` — readable naming convention (pg##/v## rules)
 
@@ -154,7 +154,7 @@ Each visual is a folder `v##Name/` containing a single `visual.json`.
 
 Key properties to substitute in the template:
 - `name` — must match the folder name exactly
-- `position` — x, y, z, width, height, tabOrder (apply Fixed Position Rules from `formatting-objects.md`)
+- `position` — x, y, z, width, height, tabOrder (apply Layout Rules from `layout-rules.md`)
 - `query.queryState` — replace all placeholder table/field names with actual model values (case-sensitive)
 - `displayName` — set a short, user-friendly label for each field projection (measures especially).
 

@@ -1,4 +1,4 @@
-# Formatting Objects
+# Layout Rules
 
 Visual formatting in PBIR is controlled through `objects` properties at the visual level and `visualContainerObjects` at the container level. All visual formatting is defined directly inside each visual JSON template.
 
@@ -17,8 +17,6 @@ Every page must include the following elements in the **header row** (y=16, heig
 - Slicers are anchored to the **right edge**, with a 32px margin from the page border.
 - Multiple slicers: spaced 32px apart, growing from right to left.
 - The title textbox spans from x=32 to 32px before the first slicer.
-
-Ask the user which slicers to include (field + table for each), unless already specified.
 
 ---
 
