@@ -57,15 +57,16 @@ All reference material is bundled inside this skill at `references/`:
 
 **JSON templates (ready-to-use):**
 - `references/json-templates/card.json` — Legacy KPI Card
-- `references/json-templates/clusteredColumnChart.json` — Vertical bar chart
 - `references/json-templates/clusteredBarChart.json` — Horizontal bar chart
-- `references/json-templates/lineChart.json` — Line chart
+- `references/json-templates/clusteredColumnChart.json` — Vertical bar chart
 - `references/json-templates/comboChart.json` — Column + line combo chart
-- `references/json-templates/tableEx.json` — Table with multiple columns/measures
-- `references/json-templates/matrix.json` — Pivot table with rows/columns/values
 - `references/json-templates/slicer.json` — Slicer dropdown
 - `references/json-templates/donutChart.json` — Donut/pie chart
+- `references/json-templates/lineChart.json` — Line chart
+- `references/json-templates/matrix.json` — Pivot table with rows/columns/values
 - `references/json-templates/page.json` — Standard page definition
+- `references/json-templates/table.json` — Table with multiple columns/measures
+- `references/json-templates/title.json` — Textbox with the page title
 
 **JSON schemas (Microsoft originals):**
 - `references/json-schemas/` — local copies of all PBIR schemas for offline validation
@@ -73,19 +74,6 @@ All reference material is bundled inside this skill at `references/`:
 Always read the relevant template file before building any visual. Templates contain the complete and correct formatting for that visual type.
 
 ## How It Works
-
-### Step 0: Prerequisites
-
-Before using this skill, verify:
-1. **A PBIP project already exists** — user must have saved a `.pbip` from Power BI Desktop
-2. **Measures exist** — created in Power BI Desktop
-3. **Power BI Desktop is CLOSED** — files cannot be written while Desktop has the project open
-
-If the user doesn't have a PBIP yet, instruct them to:
-1. Open Power BI Desktop
-2. Connect to their data source
-3. File → Save As → select "Power BI Project (.pbip)" format
-4. This creates the full boilerplate structure that this skill needs
 
 ### Step 1: Gather Requirements
 
